@@ -9,7 +9,7 @@ set -euo pipefail
 
 declare -A config
 config['branch']=extended
-config['detach']=false
+config['detach']=true
 config['dryrun']=false
 config['reason']=homebrew
 config['source']=kamilsk/godownloader
@@ -24,11 +24,11 @@ order=(origin upstream)
 # How to use it
 #
 #  ```bash
-#  $ run --increment patch
-#  $ run --increment patch v0.1.0
-#  $ run --increment patch -- v1.15.1
-#  $ run --increment patch v0.1.0 -- v1.15.1
-#  $ run -d --increment patch v0.1.0 -- v1.15.1 > bin/transaction.bash
+#  $ run patch
+#  $ run patch v0.1.0
+#  $ run patch -- v1.15.1
+#  $ run patch v0.1.0 -- v1.15.1
+#  $ run -d patch v0.1.0 -- v1.15.1 > bin/transaction.bash
 #  ```
 #
 function patch() {
@@ -55,9 +55,9 @@ function patch() {
 # How to use it
 #
 #  ```bash
-#  $ run --increment release
-#  $ run --increment release v0.1.0
-#  $ run -d --increment release v0.1.0 > bin/transaction.bash
+#  $ run release
+#  $ run release v0.1.0
+#  $ run -d release v0.1.0 > bin/transaction.bash
 #  ```
 #
 function release() {
@@ -90,15 +90,6 @@ function release() {
     _ git push "${remote}" "refs/tags/${version}"
   done
   @publish "${version}"
-
-  # add build metadata
-  if ${config['detach']}; then return; fi
-  local revision
-  revision=$(git rev-parse --short HEAD)
-  _ git tag -m "'specific build version'" "${version}+${revision}"
-  for remote in $(git remote | grep -v upstream); do
-    _ git push "${remote}" "refs/tags/${version}+${revision}"
-  done
 }
 
 @amend() {
@@ -200,7 +191,8 @@ function release() {
 }
 
 @version() {
-  git ls-remote --tags --sort=-v:refname "${remotes['upstream']}" |
+  git ls-remote -q --sort=-v:refname --tags upstream |
+    grep -v '{}' |
     head -1 |
     awk -F/ '{print $3}'
 }
@@ -261,7 +253,7 @@ _() {
 function @main() {
   for arg in "${@}"; do
     case "${arg}" in
-    --increment)
+    -i | --increment)
       config['detach']=true
       shift
       ;;
