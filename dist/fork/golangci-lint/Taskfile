@@ -46,8 +46,12 @@ function patch() {
   _ git rebase -i "${config['reason']}"
   _ go mod edit -require="${config['vendor']}@${vendor}"
   _ go mod tidy
-  _ go mod edit -replace='golang.org/x/tools=github.com/kamilsk/go-tools@latest'
+
+  local v
+  v=$(go list -m golang.org/x/tools | awk '{print $2}')
+  _ go mod edit -replace="golang.org/x/tools=github.com/kamilsk/go-tools@${v}"
   _ go mod tidy
+
   _ git add .
   @amend
   _ git rebase --continue
