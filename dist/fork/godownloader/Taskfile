@@ -132,7 +132,7 @@ function release() {
 
 @fetch() {
   for remote in "${order[@]}"; do
-    _ git fetch "${remote}" --force --prune --tags
+    @ git fetch "${remote}" --force --prune --tags
   done
 }
 
@@ -221,6 +221,11 @@ Usage: $0 <task> <args>
 Tasks:
 EOF
   compgen -A function | grep -Ev '^(@|_)' | sort | cat -n
+}
+
+@() {
+  ${config['dryrun']} && echo "${@}"
+  "${@}"
 }
 
 _() {
