@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+[ "${BASH_VERSINFO:-0}" -ge 4 ] || {
+  echo "bash version 4 or higher is required" >&2
+  exit 1
+}
+
+set -euo pipefail
+
+declare -A config
+config['dryrun']=false
+
+@debug() { echo "${@}"; }
+@trace() { @debug "${@}" && "${@}"; }
+@error() { echo "${@}" >&2; }
+@fatal() { @error "${@}" && exit 1; }
+@usage() {
+  cat - <<EOF
+Usage: $0 <task> <args>
+Tasks:
+EOF
+  compgen -A function | grep -Ev '^(@|_)' | sort | cat -n
+}
+
+@() {
+  ${config['dryrun']} && echo "${@}"
+  "${@}"
+}
+
+_() {
+  if ${config['dryrun']}; then
+    echo "${@}"
+    return
+  fi
+  trap 'echo "${@}"' ERR
+  "${@}"
+}
+
+-() {
+  if ${config['dryrun']}; then
+    echo "${*} || false"
+    return
+  fi
+  trap 'echo "${*} || false"' ERR
+  "${@}" || false
+}
+
++() {
+  if ${config['dryrun']}; then
+    echo "${*} || true"
+    return
+  fi
+  trap 'echo "${*} || true"' ERR
+  "${@}" || true
+}
+
+function @main() {
+  for arg in "${@}"; do
+    case "${arg}" in
+    -d | --dry-run)
+      config['dryrun']=true
+      shift
+      ;;
+    *) break ;;
+    esac
+  done
+  "${@:-@usage}"
+}
+
+@main "${@}"
