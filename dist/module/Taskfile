@@ -10,6 +10,23 @@ set -euo pipefail
 declare -A config
 config['dryrun']=false
 
+function docs() {
+  rm -rf ./docs/*
+  git checkout docs/CNAME docs/redirects
+
+  pushd tools
+  trap popd EXIT
+
+  local lock file=package-lock.json
+  lock=$(dirname "${file}")/node_modules/checksum.lock
+  if [ ! -f "${lock}" ] || [ "$(cat "${lock}")" != "$(md5sum "${file}")" ]; then
+    npm ci
+    md5sum "${file}" >"${lock}"
+  fi
+
+  docz build && docz serve
+}
+
 @debug() { echo "${@}"; }
 @trace() { @debug "${@}" && "${@}"; }
 @error() { echo "${@}" >&2; }
