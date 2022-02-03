@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# TODO:refactor generate it from the main.bash
+source bin/lib/main.bash
