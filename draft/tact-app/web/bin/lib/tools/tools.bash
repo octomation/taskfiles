@@ -4,7 +4,7 @@
 _os=$(uname -s | tr '[:upper:]' '[:lower:]')
 _arch=$(uname -m | tr '[:upper:]' '[:lower:]')
 
-path=$(@root)/tools/node_modules/.bin
+path="$(@root)/tools/node_modules/.bin"
 if [[ ":${PATH}:" != *":${path}:"* ]]; then
   export PATH="${path}:${PATH}"
 fi

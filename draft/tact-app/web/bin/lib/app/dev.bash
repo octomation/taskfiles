@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck source=config.bash      # $config
-# shellcheck source=node.bash        # @node
-# shellcheck source=../core/git.bash # @root
+# shellcheck source=node.bash              # @node
+# shellcheck source=../core/git.bash       # @root
+# shellcheck source=../runtime/config.bash # $config
 
 dev() { @node -p "127.0.0.1:${config['port']}":3000 -- npm run dev; }
 

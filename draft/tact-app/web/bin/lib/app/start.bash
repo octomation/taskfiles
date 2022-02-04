@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck source=build.bash  # build
-# shellcheck source=config.bash # $config
-# shellcheck source=node.bash   # @node
+# shellcheck source=build.bash             # build
+# shellcheck source=node.bash              # @node
+# shellcheck source=../runtime/config.bash # $config
 
 # Example: run start [--from-scratch]
 # Example: run start docker [--from-scratch]
