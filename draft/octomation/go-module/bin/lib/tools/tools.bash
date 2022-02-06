@@ -16,6 +16,23 @@ fi
 tools() {
   pushd "$(@root)/tools" >/dev/null || exit 1
   trap 'popd >/dev/null' ERR
-  "${@}"
+
+  local args=()
+  if [[ " ${*} " =~ ' -- ' ]]; then
+    local arg
+    for arg in "${@}"; do
+      shift
+      if [[ "${arg}" == '--' ]]; then
+        "${args[@]}"
+        args=()
+        continue
+      fi
+      args+=("${arg}")
+    done
+  else
+    args=("${@}")
+  fi
+  "${args[@]}"
+
   popd >/dev/null || exit 1
 }
