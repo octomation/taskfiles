@@ -8,6 +8,9 @@ path="$(@root)/bin/${_os}/${_arch}"
 if [[ ":${PATH}:" != *":${path}:"* ]]; then
   export PATH="${path}:${PATH}"
 fi
+if [[ -z "${GOBIN}" ]]; then
+  export GOBIN="${path}"
+fi
 
 # Example: run tools go mod tidy
 tools() {
