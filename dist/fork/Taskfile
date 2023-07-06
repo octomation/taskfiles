@@ -105,7 +105,7 @@ order=(origin upstream)
     + git tag -d "${tag}"
     for remote in $(git remote | grep -v upstream); do
       echo "${tags[${remote}]}" | grep -q "^${tag}$" || continue
-      + git push "${remote}" :refs/tags/"${tag}"
+      _ git push "${remote}" :refs/tags/"${tag}"
     done
   done
 }
@@ -113,7 +113,10 @@ order=(origin upstream)
 @publish() {
   local version=${1}
   + gh release -R "${config['source']}" delete "${version}" -y
-  _ gh release -R "${config['source']}" edit "${config['reason']}" --draft=false --prerelease
+  _ gh release -R "${config['source']}" edit "${config['reason']}" \
+    --draft=false \
+    --notes-file CHANGES.md \
+    --prerelease
   _ goreleaser --clean --release-notes CHANGES.md
   _ rm -rf dist
   _ gh release -R "${config['source']}" view "${version}" -w

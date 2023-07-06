@@ -152,7 +152,10 @@ function release() {
 @publish() {
   local version=${1}
   + gh release -R "${config['source']}" delete "${version}" -y
-  _ gh release -R "${config['source']}" edit "${config['reason']}" --draft=false --prerelease
+  _ gh release -R "${config['source']}" edit "${config['reason']}" \
+    --draft=false \
+    --notes-file CHANGES.md \
+    --prerelease
   _ goreleaser --clean --release-notes CHANGES.md
   _ rm -rf dist
   _ gh release -R "${config['source']}" view "${version}" -w
