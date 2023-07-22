@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# shellcheck source=../core/git.bash # @pull
-# shellcheck source=deps.bash        # @deps
-# shellcheck source=build.bash       # build
+# shellcheck source=deps.bash                 # @deps
+# shellcheck source=../docker/node/build.bash # build
+# shellcheck source=../git/core.bash          # @pull
 
 refresh() {
   @pull
 
-  @deps install
-  @deps docs
-  @deps tools
+  deps install
+  deps docs
+  deps tools
 
   build
 }

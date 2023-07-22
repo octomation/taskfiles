@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
-# shellcheck source=node.bash              # @node
-# shellcheck source=../core/git.bash       # @root
-# shellcheck source=../runtime/config.bash # $config
+# shellcheck source=../../config/global.bash  # $config
+# shellcheck source=../../git/core.bash       # @root
 
-dev() { @node -p "127.0.0.1:${config['port']}":3000 -- npm run dev; }
-
-isolated() {
+@node() {
   local real root
   real=$(pwd)
   root=$(@root)
@@ -30,5 +27,7 @@ isolated() {
     done
   fi
 
-  docker run "${args[@]}" "node:${config['node']}" "${@}"
+  docker run "${args[@]}" "node:${config['node']}-alpine" "${@}"
 }
+
+@npm() { @node npm run "${@}"; }

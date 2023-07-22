@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
-# shellcheck source=../core/git.bash # @root
+# shellcheck source=../../config/global.bash  # $config
+# shellcheck source=node.bash                 # @node
+# shellcheck source=../../git/core.bash       # @root
 
-@node() {
+dev() {
+  local port="${config['port']}"
+  @busy "${port}" && @fatal the port "${port}" is busy
+
+  @node -p "127.0.0.1:${port}":3000 -- npm run dev;
+}
+
+@isolated() {
   local real root
   real=$(pwd)
   root=$(@root)
@@ -26,7 +35,5 @@
     done
   fi
 
-  docker run "${args[@]}" "node:${config['node']}-alpine" "${@}"
+  docker run "${args[@]}" "node:${config['node']}" "${@}"
 }
-
-@npm() { @node npm run "${@}"; }

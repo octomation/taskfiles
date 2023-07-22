@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# shellcheck source=../core/env.bash # @token
-# shellcheck source=tools.bash       # $path
+# shellcheck source=../utils/env.bash   # @env @key @token
+# shellcheck source=../utils/print.bash # @fatal
 
 set_sentry_token() {
   @token store Sentry 64
@@ -13,9 +13,12 @@ EOF
 _sentry=$(which sentry-cli || true)
 
 sentry() {
-  [ -z "${_sentry}" ] && @fatal Please setup environment first
+  [ -z "${_sentry}" ] && @fatal please setup environment first
+
+  local key token
+  key=$(@key sentry)
+  token=${!key:-$(@env get "${key}")}
 
   local args=("${@}")
-
-  "${_sentry}" --auth-token="$(@token get sentry)" "${args[@]}" #@decorator:_
+  "${_sentry}" --auth-token="${token}" "${args[@]}"
 }
