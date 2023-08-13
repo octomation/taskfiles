@@ -35,7 +35,7 @@ Sometimes writing a Makefile is difficult and not always possible.
 - [🧩 Template for typical CLI tool written on Go](https://github.com/octomation/go-tool).
 - [🧩 Template for typical service written on Go](https://github.com/octomation/go-service).
 
-<p align="right">made with ❤️ for everyone by OctoLab</p>
+<p align="right">made with ❤️ for everyone by <a href="https://www.octolab.org/">OctoLab</a></p>
 
 ![Taskfiles][social.image]
 
