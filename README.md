@@ -1,8 +1,10 @@
-> # 🗂 Taskfiles
->
-> Set of useful Taskfiles.
+[![Taskfiles][social.preview]][preview.config]
 
 [![Mirror][mirror.icon]][mirror.page]
+
+# 🗂 Taskfiles
+
+Set of useful Taskfiles.
 
 ## 💡 Idea
 
@@ -21,27 +23,27 @@ Sometimes writing a Makefile is difficult and not always possible.
 5. See the `dist` directory.
 6. Take profit.
 
-## 🤲 Outputs & outcomes
+[maintainer]: https://github.com/octomation/maintainer#-installation
 
-### Outputs
+## 🏗️ Ecosystem
 
-- [godownloader](https://github.com/kamilsk/godownloader/releases/tag/homebrew).
-- [goimports](https://github.com/kamilsk/go-tools/releases/tag/goimports).
-- [golangci-lint](https://github.com/kamilsk/golangci-lint/releases/tag/looppointer).
-
-### Outcomes
+### Impact
 
 - [🧩 Template for typical module written on Go](https://github.com/octomation/go-module).
 - [🧩 Template for typical CLI tool written on Go](https://github.com/octomation/go-tool).
 - [🧩 Template for typical service written on Go](https://github.com/octomation/go-service).
 
+### Output
+
+- [godownloader](https://github.com/kamilsk/godownloader/releases/tag/homebrew).
+- [goimports](https://github.com/kamilsk/go-tools/releases/tag/goimports).
+- [golangci-lint](https://github.com/kamilsk/golangci-lint/releases/tag/looppointer).
+
 <p align="right">made with ❤️ for everyone by <a href="https://www.octolab.org/">OctoLab</a></p>
 
-![Taskfiles][social.image]
+[social.preview]:   https://cdn.octolab.org/repo/taskfiles.png
+[preview.config]:   https://socialify.git.ci/octomation/taskfiles?description=1&font=Raleway&language=1&name=1&owner=1&pattern=Circuit%20Board&theme=Light
+[preview.fallback]: https://socialify.git.ci/octomation/taskfiles/image?description=1&font=Raleway&language=1&name=1&owner=1&pattern=Circuit%20Board&theme=Light
 
 [mirror.page]:      https://bitbucket.org/kamilsk/taskfiles
 [mirror.icon]:      https://img.shields.io/badge/mirror-bitbucket-blue
-
-[maintainer]:       https://github.com/octomation/maintainer#-installation
-
-[social.image]:     https://socialify.git.ci/octomation/taskfiles/image?description=1&font=Raleway&language=1&name=1&owner=1&pattern=Circuit%20Board&theme=Light
