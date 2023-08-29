@@ -7,64 +7,13 @@ set -euo pipefail
   exit 1
 }
 
-declare -A config
-config['dryrun']=false
+root=$(git rev-parse --show-toplevel)
+include=(
+  "${root}"/draft/basis/bin/lib/config/*.bash
+  "${root}"/draft/basis/bin/lib/main.bash
+)
 
-@debug() { echo "${@}"; }
-@trace() { @debug "${@}" && "${@}"; }
-@error() { echo "${@}" >&2; }
-@fatal() { @error "${@}" && exit 1; }
-@usage() {
-  cat - <<EOF
-Usage: $0 <task> <args>
-Tasks:
-EOF
-  compgen -A function | grep -Ev '^(@|_)' | sort | cat -n
-}
-
-@() {
-  ${config['dryrun']} && echo "${@}"
-  "${@}"
-}
-
-_() {
-  if ${config['dryrun']}; then
-    echo "${@}"
-    return
-  fi
-  trap 'echo "${@}"' ERR
-  "${@}"
-}
-
--() {
-  if ${config['dryrun']}; then
-    echo "${*} || false"
-    return
-  fi
-  trap 'echo "${*} || false"' ERR
-  "${@}" || false
-}
-
-+() {
-  if ${config['dryrun']}; then
-    echo "${*} || true"
-    return
-  fi
-  trap 'echo "${*} || true"' ERR
-  "${@}" || true
-}
-
-function @main() {
-  for arg in "${@}"; do
-    case "${arg}" in
-    -d | --dry-run)
-      config['dryrun']=true
-      shift
-      ;;
-    *) break ;;
-    esac
-  done
-  "${@:-@usage}"
-}
-
-@main "${@}"
+for script in "${include[@]}"; do
+  # shellcheck source=draft/basis/bin/lib/main.bash
+  source "${script}"
+done
